@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fc-gateway
+  labels:
+    app: fc-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fc-gateway
+  template:
+    metadata:
+      labels:
+        app: fc-gateway
+    spec:
+      containers:
+        - name: fc-gateway
+          image: sthanguy/fc-gateway
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
