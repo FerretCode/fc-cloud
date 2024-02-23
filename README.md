@@ -5,11 +5,11 @@ A cost efficient cloud platform for small applications
 ## Pricing per project
  
 - Self-configured
-    - $3/month
-    - $4/month with ingress
-    - $7/month with DB (ingress included)
+    - Usage based
+    - $1/month for ingress
+    - $2/month for DB
 - FerretCode Freelancing managed hosting
-    - $20/month
+    - $10/month + usage
     - What's included?
         - Ingress
         - DB
