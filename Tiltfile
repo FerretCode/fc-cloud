@@ -34,3 +34,6 @@ k8s_yaml(['./services/session-cache/service.yaml', './services/session-cache/con
 
 # postgres
 k8s_yaml(['./services/postgres/configmap.yaml', './services/postgres/pvc.yaml', './services/postgres/deployment.yaml', './services/postgres/service.yaml'])
+
+# rabbitmq
+k8s_yaml(['./services/rabbitmq/configmap.yaml', './services/rabbitmq/pvc.yaml', './services/rabbitmq/service.yaml', './services/rabbitmq/statefulset.yaml', './services/rabbitmq/namespace.yaml'])

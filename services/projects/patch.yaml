@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fc-projects
+  labels:
+    app: fc-projects
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fc-projects
+  template:
+    metadata:
+      labels:
+        app: fc-projects
+    spec:
+      containers:
+        - name: fc-projects
+          image: sthanguy/fc-projects:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DSN
+              valueFrom:
+                secretKeyRef:
+                  name: managed-secret 
+                  key: DSN
+                  optional: false
+            - name: COOKIE_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: managed-secret
+                  key: COOKIE_DOMAIN
+                  optional: false

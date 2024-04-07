@@ -36,6 +36,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	db.AutoMigrate(&routes.CloudUser{})
+
 	host := os.Getenv("FC_SESSION_CACHE_SERVICE_HOST")
 	port := os.Getenv("FC_SESSION_CACHE_SERVICE_PORT")
 
