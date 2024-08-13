@@ -7,16 +7,29 @@ spec:
   resyncInterval: 60
   authentication:
     # make sure to configure infisical auth first
-    kubernetesAuth:
-      identityId: 576db860-a1a5-4213-8cf6-2f8919e567fc
-      serviceAccountRef:
-        name: infisical-auth
-        namespace: default
+    # for now, the infisical CRD doesn't seem to support kubernetesAuth yet.
+    # kubernetesAuth:
+    #   identityId: 576db860-a1a5-4213-8cf6-2f8919e567fc
+    #   serviceAccountRef:
+    #     name: infisical-auth
+    #     namespace: default
+    #   secretsScope:
+    #     project-slug: fc-cloud-rpxe
+    #     envSlug: dev # for dev
+    #     secretsPath: "/"
+    #     recursive: true
+
+    # make generic secret for universal auth
+    # kubectl create secret generic universal-auth-credentials --from-literal=clientId="<your-identity-client-id>" --from-literal=clientSecret="<your-identity-client-secret>"
+    universalAuth:
       secretsScope:
-        project-slug: fc-cloud-rpxe
-        envSlug: dev # for dev
+        projectSlug: fc-cloud-rpxe
+        envSlug: dev
         secretsPath: "/"
-        recursive: true
+      credentialsRef:
+        secretName: universal-auth-credentials
+        secretNamespace: default
+
   managedSecretReference:
     secretName: managed-secret
     secretNamespace: default
