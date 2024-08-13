@@ -1,6 +1,13 @@
-FROM golang:1.21-alpine
-WORKDIR /home/nonroot/route
+FROM golang:1.22.0-alpine
+
+WORKDIR /app
+
 COPY go.mod go.sum ./
-RUN go mod download && go mod verify
-COPY . .
-CMD ["go", "run", "main.go"] # fix this asap
+
+RUN go mod download
+
+COPY . ./
+
+RUN go build -ldflags "-w -s" -o main
+
+ENTRYPOINT ["/app/main"]

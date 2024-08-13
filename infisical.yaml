@@ -6,13 +6,17 @@ spec:
   hostAPI: https://app.infisical.com/api
   resyncInterval: 60
   authentication:
-    serviceToken:
-      serviceTokenSecretReference:
-        secretName: service-token
-        secretNamespace: default
+    # make sure to configure infisical auth first
+    kubernetesAuth:
+      identityId: 576db860-a1a5-4213-8cf6-2f8919e567fc
+      serviceAccountRef:
+        name: infisical-auth
+        namespace: default
       secretsScope:
-        envSlug: dev
+        project-slug: fc-cloud-rpxe
+        envSlug: dev # for dev
         secretsPath: "/"
+        recursive: true
   managedSecretReference:
     secretName: managed-secret
     secretNamespace: default

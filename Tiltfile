@@ -37,3 +37,6 @@ k8s_yaml(['./services/postgres/configmap.yaml', './services/postgres/pvc.yaml', 
 
 # rabbitmq
 k8s_yaml(['./services/rabbitmq/configmap.yaml', './services/rabbitmq/pvc.yaml', './services/rabbitmq/service.yaml', './services/rabbitmq/statefulset.yaml', './services/rabbitmq/namespace.yaml'])
+
+# infisical
+k8s_yaml(['./services/infisical/role.yaml', './services/infisical/service.yaml', './services/infisical/token.yaml'])
