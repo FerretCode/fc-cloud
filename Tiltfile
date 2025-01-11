@@ -1,5 +1,7 @@
 load('ext://restart_process', 'docker_build_with_restart')
 
+allow_k8s_contexts('default')
+
 docker_build_with_restart('sthanguy/fc-gateway',
 							context='./services/gateway',
 							entrypoint='go run main.go',

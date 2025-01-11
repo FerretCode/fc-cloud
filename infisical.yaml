@@ -23,13 +23,13 @@ spec:
     # kubectl create secret generic universal-auth-credentials --from-literal=clientId="<your-identity-client-id>" --from-literal=clientSecret="<your-identity-client-secret>"
     universalAuth:
       secretsScope:
-        projectSlug: fc-cloud-rpxe
+        projectSlug: homelab-mu-qn
         envSlug: dev
-        secretsPath: "/"
+        secretsPath: "/fc-cloud"
       credentialsRef:
         secretName: universal-auth-credentials
         secretNamespace: default
 
   managedSecretReference:
     secretName: managed-secret
-    secretNamespace: default
+    secretNamespace: fc-cloud

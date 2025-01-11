@@ -11,8 +11,9 @@ import (
 
 func Login(w http.ResponseWriter, r *http.Request, db gorm.DB, rdb redis.Client) error {
 	url := fmt.Sprintf(
-		"https://github.com/login/oauth/authorize?client_id=%s&scope=read:user&redirect_uri=http://%s:%s/auth/callback",
+		"https://github.com/login/oauth/authorize?client_id=%s&scope=read:user&redirect_uri=%s://%s:%s/auth/callback",
 		os.Getenv("GITHUB_CLIENT_ID"),
+		os.Getenv("CALLBACK_URL_PROTOCOL"),
 		os.Getenv("CALLBACK_URL_HOST"),
 		os.Getenv("CALLBACK_URL_PORT"),
 	)
