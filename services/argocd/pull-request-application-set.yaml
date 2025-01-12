@@ -12,18 +12,18 @@ spec:
           repo: fc-cloud
           labels:
             - preview
+          
   template:
     metadata:
       name: 'fc-cloud-{{.branch}}-{{.number}}'
     spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
       source:
         repoURL: 'https://github.com/FerretCode-Freelancing/fc-cloud.git'
-        targetRevision: '{{.head_sha}}'
-        path: services/
-        kustomize:
-          nameSuffix: '{{.branch}}'
-          commonLabels:
-            app.kubernetes.io/instance: '{{.branch}}-{{.number}}'
+        targetRevision: 'HEAD'
+        path: "services/argocd/kustomization.yaml" 
       project: "default" 
       destination:
         server: https://kubernetes.default.svc
