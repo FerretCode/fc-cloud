@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: github-feature-branch-generator
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - pullRequest:
+        github:
+          owner: FerretCode-Freelancing
+          repo: fc-cloud
+          labels:
+            - preview
+  template:
+    metadata:
+      name: 'fc-cloud-{{.branch}}-{{.number}}'
+    spec:
+      source:
+        repoURL: 'https://github.com/FerretCode-Freelancing/fc-cloud.git'
+        targetRevision: '{{.head_sha}}'
+        path: services/
+        kustomize:
+          nameSuffix: '{{.branch}}'
+          commonLabels:
+            app.kubernetes.io/instance: '{{.branch}}-{{.number}}'
+      project: "default" 
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.branch}}-{{.number}}'
