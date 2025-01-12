@@ -19,3 +19,5 @@ A cost efficient cloud platform for small applications
 
 - Join the [Discord](https://discord.gg/xk43udsvKA) and go to #hosting-support
 - Create an issue
+
+test feature
