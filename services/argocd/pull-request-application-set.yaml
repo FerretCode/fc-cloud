@@ -23,7 +23,7 @@ spec:
       source:
         repoURL: 'https://github.com/FerretCode-Freelancing/fc-cloud.git'
         targetRevision: 'HEAD'
-        path: "services/argocd/" 
+        path: "services/" 
       project: "default" 
       destination:
         server: https://kubernetes.default.svc
