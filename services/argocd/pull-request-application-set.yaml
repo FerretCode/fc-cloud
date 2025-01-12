@@ -24,17 +24,15 @@ spec:
         repoURL: 'https://github.com/FerretCode-Freelancing/fc-cloud.git'
         targetRevision: 'HEAD'
         path: "services/" 
-        patches:
-          - patch: |-
-              - op: replace
-                path: /spec/managedSecretReference/secretNamespace
-                value: "{{branch}}"
-          - target:
-              kind: InfisicalSecret
-              name: infisicalsecret
-    target:
-      kind: InfisicalSecret
-      name: infisicalsecret
+        kustomize:
+          patches:
+            - target:
+                kind: InfisicalSecret
+                name: infisicalsecret
+              patch: |-
+                - op: replace
+                  path: /spec/managedSecretReference/secretNamespace
+                  value: "{{branch}}"
       project: "default" 
       destination:
         server: https://kubernetes.default.svc
