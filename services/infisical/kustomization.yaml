@@ -6,3 +6,12 @@ resources:
   - role.yaml
   - service.yaml
   - token.yaml
+  - infisical-operator.yaml
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/managedSecretReference/secretNamespace
+        value: {{branch}
+    target:
+      kind: InfisicalSecret
+      name: infisicalsecret
