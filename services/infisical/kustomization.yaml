@@ -8,10 +8,10 @@ resources:
   - token.yaml
   - infisical-operator.yaml
 patches:
-  - patch: |-
+  - patch: |
       - op: replace
         path: /spec/managedSecretReference/secretNamespace
-        value: {{branch}
+        value: "{{branch}}"
     target:
       kind: InfisicalSecret
       name: infisicalsecret
