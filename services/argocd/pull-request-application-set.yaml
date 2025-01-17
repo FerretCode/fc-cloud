@@ -12,28 +12,29 @@ spec:
           repo: fc-cloud
           labels:
             - preview
-          
+
   template:
     metadata:
-      name: 'fc-cloud-{{.branch}}-{{.number}}'
+      name: "fc-cloud-{{.branch}}-{{.number}}"
     spec:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
       source:
-        repoURL: 'https://github.com/FerretCode-Freelancing/fc-cloud.git'
-        targetRevision: 'HEAD'
-        path: "services/" 
+        repoURL: "https://github.com/FerretCode-Freelancing/fc-cloud.git"
+        targetRevision: "HEAD"
+        path: "services/"
         kustomize:
           patches:
             - target:
                 kind: InfisicalSecret
                 name: infisicalsecret
+                namespace: fc-cloud
               patch: |-
                 - op: replace
                   path: /spec/managedSecretReference/secretNamespace
-                  value: "{{branch}}"
-      project: "default" 
+                  value: "{{.branch}}"
+      project: "default"
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{.branch}}-{{.number}}'
+        namespace: "{{.branch}}-{{.number}}"
