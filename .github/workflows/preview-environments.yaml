@@ -2,7 +2,6 @@ name: "Preview Environments"
 
 on:
   pull_request:
-    branches: [ $default_branch  ]
     types: [opened, synchronize, reopened, closed]
 
 jobs:
