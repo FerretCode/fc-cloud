@@ -27,6 +27,7 @@ jobs:
 
   deploy-preview-environment:
     if: github.event.action != 'closed'
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Tailscale
