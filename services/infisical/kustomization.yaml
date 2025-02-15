@@ -6,4 +6,4 @@ resources:
   - role.yaml
   - service.yaml
   - token.yaml
-  - infisical-operator.yaml
+  - infisicalsecret.yaml

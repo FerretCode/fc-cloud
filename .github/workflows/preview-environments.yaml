@@ -1,0 +1,80 @@
+name: "Preview Environments"
+
+on:
+  pull_request:
+    branches: [ $default_branch  ]
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  build:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Registry
+        run: echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Build Auth service
+        run: |
+          docker build ./services/auth --tag "${{ secrets.DOCKER_HUB_USERNAME }}/fc-auth:${{ github.event.number }}"
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/fc-auth:${{ github.event.number }}"
+
+      - name: Build Gateway service
+        run: |
+          docker build ./services/gateway --tag "${{ secrets.DOCKER_HUB_USERNAME }}/fc-gateway:${{ github.event.number }}"
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/fc-gateway:${{ github.event.number }}"
+
+  deploy-preview-environment:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tags:preview-environments
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Configure Kubeconfig
+        run: echo "${{ secrets.KUBECONFIG }}" > kubeconfig && chmod 600 kubeconfig 
+
+      - name: Create Preview Namespace
+        run: kubectl --kubeconfig=kubeconfig create namespace preview-pr-${{ github.event.number }} || true
+
+      - name: Deploy to Preview Environment
+        run: |
+          cd services
+          kustomize edit set namespace preview-pr-${{ github.event.number }}
+          kubectl --kubeconfig=../kubeconfig apply -k .
+
+  cleanup-preview-environment:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tags:preview-environments
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3 
+        with:
+          version: 'latest'
+
+      - name: Configure Kubeconfig
+        run: echo "${{ secrets.KUBECONFIG }}" > kubeconfig && chmod 600 kubeconfig 
+      
+      - name: Delete Preview Environment
+        run: kubectl --kubeconfig=kubeconfig delete namespace preview-pr-${{ github.event.number }}
